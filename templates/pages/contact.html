@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Контакты{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h2>Контакты</h2>
+                <p><strong>Адрес:</strong> Москва, ул. Автомойкина, д. 12</p>
+                <p><strong>Телефон:</strong> +7 (495) 123-45-67</p>
+                <p><strong>Email:</strong> info@clean-car.ru</p>
+                <p><strong>Часы работы:</strong> Пн-Вс: 8:00 - 22:00</p>
+                
+                <h3 class="mt-4">Как добраться</h3>
+                <p>Мы находимся в центре города, рядом с метро "Автомойкинская".</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h2>Схема проезда</h2>
+                <!-- Здесь можно добавить карту -->
+                <div class="bg-light p-4 text-center">
+                    <p>Карта будет здесь</p>
+                    <p>Широта: 55.7558</p>
+                    <p>Долгота: 37.6173</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

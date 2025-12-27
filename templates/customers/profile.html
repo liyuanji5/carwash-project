@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}Мой профиль{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h4>Мой профиль</h4>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-3">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px; font-size: 2rem;">
+                        {{ user.first_name|first|default:user.username|first|upper }}
+                    </div>
+                    <h5 class="mt-2">{{ user.get_full_name|default:user.username }}</h5>
+                    <p class="text-muted">{{ user.email }}</p>
+                </div>
+                
+                <a href="{% url 'customers:edit_profile' %}" class="btn btn-primary w-100">Редактировать профиль</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>Информация о клиенте</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Контактные данные</h6>
+                        <p><strong>Телефон:</strong> {{ customer_profile.phone }}</p>
+                        <p><strong>Email:</strong> {{ user.email }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Автомобиль</h6>
+                        <p><strong>Марка:</strong> {{ customer_profile.car_model|default:"Не указана" }}</p>
+                        <p><strong>Госномер:</strong> {{ customer_profile.car_number|default:"Не указан" }}</p>
+                        <p><strong>Ваша скидка:</strong> {{ customer_profile.discount }}%</p>
+                    </div>
+                </div>
+                
+                {% if customer_profile.notes %}
+                <div class="mt-3">
+                    <h6>Заметки</h6>
+                    <p>{{ customer_profile.notes }}</p>
+                </div>
+                {% endif %}
+                
+                <div class="mt-4">
+                    <h6>Статистика</h6>
+                    <p><strong>Клиент с:</strong> {{ customer_profile.created_at|date:"d.m.Y" }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h4>Последние записи</h4>
+            </div>
+            <div class="card-body">
+                {% if customer_profile.bookings.all %}
+                    <div class="list-group">
+                        {% for booking in customer_profile.bookings.all|slice:":3" %}
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">{{ booking.service.name }}</h6>
+                                    <small>{{ booking.created_at|date:"d.m.Y" }}</small>
+                                </div>
+                                <p class="mb-1">Дата: {{ booking.booking_date }} в {{ booking.booking_time }}</p>
+                                <small>Статус: 
+                                    <span class="badge bg-{% if booking.status == 'completed' %}success{% elif booking.status == 'cancelled' %}danger{% else %}warning{% endif %}">
+                                        {{ booking.get_status_display }}
+                                    </span>
+                                </small>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <a href="{% url 'bookings:my_bookings' %}" class="btn btn-outline-primary mt-3">Все записи</a>
+                {% else %}
+                    <p>У вас пока нет записей.</p>
+                    <a href="{% url 'bookings:create_booking' %}" class="btn btn-primary">Записаться на мойку</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

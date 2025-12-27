@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Детали записи{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4>Запись на услугу</h4>
+    </div>
+    <div class="card-body">
+        <h5>{{ booking.service.name }}</h5>
+        <p><strong>Дата:</strong> {{ booking.booking_date }}</p>
+        <p><strong>Время:</strong> {{ booking.booking_time }}</p>
+        <p><strong>Статус:</strong> {{ booking.get_status_display }}</p>
+        <p><strong>Цена:</strong> {{ booking.total_price }} руб.</p>
+        {% if booking.notes %}
+            <p><strong>Заметки:</strong> {{ booking.notes }}</p>
+        {% endif %}
+    </div>
+    <div class="card-footer">
+        <a href="{% url 'bookings:my_bookings' %}" class="btn btn-secondary">Назад к списку</a>
+        {% if booking.status == 'pending' %}
+            <a href="{% url 'bookings:edit_booking' booking.pk %}" class="btn btn-primary">Изменить</a>
+            <a href="{% url 'bookings:delete_booking' booking.pk %}" class="btn btn-danger">Отменить</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

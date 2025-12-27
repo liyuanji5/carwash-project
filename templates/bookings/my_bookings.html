@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Мои записи{% endblock %}
+{% block content %}
+<h2>Мои записи</h2>
+{% if bookings %}
+    <div class="list-group">
+        {% for booking in bookings %}
+            <div class="list-group-item">
+                <h5>{{ booking.service.name }}</h5>
+                <p>Дата: {{ booking.booking_date }} в {{ booking.booking_time }}</p>
+                <p>Статус: <span class="badge bg-{% if booking.status == 'completed' %}success{% elif booking.status == 'cancelled' %}danger{% else %}warning{% endif %}">
+                    {{ booking.get_status_display }}
+                </span></p>
+                <a href="{% url 'bookings:booking_detail' booking.pk %}" class="btn btn-sm btn-outline-primary">Подробнее</a>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>У вас пока нет записей.</p>
+    <a href="{% url 'bookings:create_booking' %}" class="btn btn-primary">Записаться</a>
+{% endif %}
+{% endblock %}

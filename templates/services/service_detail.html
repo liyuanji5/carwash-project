@@ -1,0 +1,85 @@
+from django.core.management.base import BaseCommand
+from django.contrib.auth.models import User
+from services.models import ServiceCategory, Service
+from customers.models import Customer
+from employees.models import Position, Employee
+from bookings.models import Box
+from datetime import date, timedelta
+
+class Command(BaseCommand):
+    help = 'Создание тестовых данных для автомойки'
+
+    def handle(self, *args, **options):
+        self.stdout.write('Создание тестовых данных...')
+        
+        # Создаем пользователя-администратора
+        admin_user, created = User.objects.get_or_create(
+            username='admin',
+            defaults={
+                'email': 'admin@carwash.ru',
+                'is_staff': True,
+                'is_superuser': True
+            }
+        )
+        if created:
+            admin_user.set_password('admin123')
+            admin_user.save()
+        
+        # Создаем категории услуг
+        categories = [
+            ('Мойка кузова', 'Наружная мойка автомобиля', 1),
+            ('Чистка салона', 'Внутренняя уборка', 2),
+            ('Полировка', 'Полировка кузова', 3),
+        ]
+        
+        for name, description, order in categories:
+            cat, created = ServiceCategory.objects.get_or_create(
+                name=name,
+                defaults={'description': description, 'order': order}
+            )
+            if created:
+                self.stdout.write(f'Создана категория: {name}')
+        
+        # Создаем услуги
+        services = [
+            ('Экспресс-мойка', 'Быстрая наружная мойка', 500, 15, 'Мойка кузова'),
+            ('Стандартная мойка', 'Полная мойка с сушкой', 1000, 30, 'Мойка кузова'),
+            ('Комплексная мойка', 'Мойка + чистка стекол', 1500, 45, 'Мойка кузова'),
+            ('Чистка салона', 'Вакуумная чистка', 800, 40, 'Чистка салона'),
+        ]
+        
+        for name, description, price, duration, category_name in services:
+            category = ServiceCategory.objects.get(name=category_name)
+            service, created = Service.objects.get_or_create(
+                name=name,
+                defaults={
+                    'description': description,
+                    'price': price,
+                    'duration': duration,
+                    'category': category
+                }
+            )
+            if created:
+                self.stdout.write(f'Создана услуга: {name} - {price} руб.')
+        
+        # Создаем боксы
+        for i in range(1, 5):
+            box, created = Box.objects.get_or_create(
+                number=i,
+                defaults={
+                    'box_type': 'standard' if i <= 2 else 'premium',
+                    'capacity': 2
+                }
+            )
+            if created:
+                self.stdout.write(f'Создан бокс: {box}')
+        
+        # Создаем должности
+        positions = ['Мойщик', 'Администратор', 'Менеджер']
+        for position_name in positions:
+            pos, created = Position.objects.get_or_create(name=position_name)
+            if created:
+                self.stdout.write(f'Создана должность: {position_name}')
+        
+        self.stdout.write(self.style.SUCCESS('Тестовые данные успешно созданы!'))
+        self.stdout.write('Логин: admin / Пароль: admin123')

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Услуги{% endblock %}
+
+{% block content %}
+<h2>Наши услуги</h2>
+
+{% if categories %}
+    {% for category in categories %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>{{ category.name }}</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for service in category.services.all %}
+                        {% if service.is_active %}
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ service.name }}</h5>
+                                        <p class="card-text">{{ service.description|truncatechars:100 }}</p>
+                                        <p class="card-text"><strong>Цена:</strong> {{ service.price }} руб.</p>
+                                        <p class="card-text"><strong>Длительность:</strong> {{ service.duration }} мин.</p>
+                                        <a href="{% url 'services:service_detail' service.pk %}" class="btn btn-primary">Подробнее</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="alert alert-info">
+        Услуги пока не добавлены.
+    </div>
+{% endif %}
+{% endblock %}

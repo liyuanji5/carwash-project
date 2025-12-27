@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Прайс-лист{% endblock %}
+
+{% block content %}
+<h2>Прайс-лист услуг</h2>
+
+{% if categories %}
+    {% for category in categories %}
+        <div class="card mb-3">
+            <div class="card-header">
+                <h3>{{ category.name }}</h3>
+                {% if category.description %}
+                    <p class="mb-0">{{ category.description }}</p>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Услуга</th>
+                                <th>Описание</th>
+                                <th>Цена</th>
+                                <th>Длительность</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for service in category.services.all %}
+                                {% if service.is_active %}
+                                    <tr>
+                                        <td>{{ service.name }}</td>
+                                        <td>{{ service.description|default:"—" }}</td>
+                                        <td>{{ service.price }} руб.</td>
+                                        <td>{{ service.duration }} мин.</td>
+                                    </tr>
+                                {% endif %}
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4">Услуги в этой категории пока не добавлены</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="alert alert-info">
+        Прайс-лист пока не заполнен. Пожалуйста, зайдите позже.
+    </div>
+{% endif %}
+{% endblock %}

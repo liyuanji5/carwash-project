@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="jumbotron bg-light p-5 rounded">
+    <h1 class="display-4">Добро пожаловать на автомойку "Чистый автомобиль"!</h1>
+    <p class="lead">Профессиональная мойка автомобилей с 2010 года. 4 бокса, 4 опытных мойщика, качественные материалы.</p>
+    <hr class="my-4">
+    <p>Запишитесь онлайн прямо сейчас и получите скидку 10% на первый визит!</p>
+    {% if user.is_authenticated %}
+        <a class="btn btn-primary btn-lg" href="{% url 'bookings:create_booking' %}" role="button">
+            Записаться онлайн
+        </a>
+    {% else %}
+        <a class="btn btn-primary btn-lg" href="{% url 'registration' %}" role="button">
+            Зарегистрироваться
+        </a>
+        <a class="btn btn-outline-primary btn-lg" href="{% url 'login' %}" role="button">
+            Войти
+        </a>
+    {% endif %}
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Работаем без выходных</h5>
+                <p class="card-text">Пн-Вс: 8:00 - 22:00</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">4 современных бокса</h5>
+                <p class="card-text">2 машины в каждом, современное оборудование</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Система скидок</h5>
+                <p class="card-text">Для постоянных клиентов до 20%</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

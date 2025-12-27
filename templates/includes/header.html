@@ -1,0 +1,65 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'bookings:index' %}">
+            🚗 Автомойка "Чистый автомобиль"
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'bookings:index' %}">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'services:service_list' %}">Услуги</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'pages:price_list' %}">Прайс-лист</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'pages:about' %}">О нас</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'pages:contact' %}">Контакты</a>
+                </li>
+            </ul>
+            
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'bookings:create_booking' %}">Записаться</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'bookings:my_bookings' %}">Мои записи</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'customers:profile' %}">
+                            {{ user.get_full_name|default:user.username }}
+                        </a>
+                    </li>
+                    {% if user.is_staff %}
+                        <!-- Добавим ссылку на стандартную Django админку -->
+                        <li class="nav-item">
+                            <a class="nav-link text-danger" href="/admin/">
+                                Админка Django
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Войти</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'registration' %}">Регистрация</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
