@@ -1,0 +1,44 @@
+[
+  {
+    "model": "services.servicecategory",
+    "pk": 1,
+    "fields": {
+      "name": "Мойка кузова",
+      "description": "Полная наружная мойка автомобиля",
+      "order": 1
+    }
+  },
+  {
+    "model": "services.servicecategory",
+    "pk": 2,
+    "fields": {
+      "name": "Чистка салона",
+      "description": "Уборка и чистка внутреннего пространства автомобиля",
+      "order": 2
+    }
+  },
+  {
+    "model": "services.service",
+    "pk": 1,
+    "fields": {
+      "name": "Экспресс-мойка",
+      "description": "Быстрая наружная мойка",
+      "price": 500,
+      "duration": 15,
+      "category": 1,
+      "is_active": true
+    }
+  },
+  {
+    "model": "services.service",
+    "pk": 2,
+    "fields": {
+      "name": "Комплексная мойка",
+      "description": "Полная наружная мойка с сушкой",
+      "price": 1500,
+      "duration": 45,
+      "category": 1,
+      "is_active": true
+    }
+  }
+]
